@@ -48,12 +48,7 @@ const githubApi = axios.create({
   baseURL: BASE_URL,
   timeout: 10000,
   headers: {
-    Accept: 'application/vnd.github.v3+json',
-    // Automatically use token when set in .env as VITE_GITHUB_TOKEN
-    // Raises rate limit from 60 → 5,000 requests/hour
-    ...(import.meta.env.VITE_GITHUB_TOKEN && {
-      Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`,
-    }),
+    Accept: 'application/vnd.github+json',
   },
 });
 
@@ -79,13 +74,10 @@ githubApi.interceptors.response.use(
         const suffix = resetIn !== null
           ? ` Resets in ${resetIn}s.`
           : '';
-        const tip = !import.meta.env.VITE_GITHUB_TOKEN
-          ? ' Add a VITE_GITHUB_TOKEN to get 5,000 req/hr.'
-          : '';
         return Promise.reject(
           new Error(
             remaining === 0
-              ? `GitHub API rate limit reached.${suffix}${tip}`
+              ? `GitHub API rate limit reached.${suffix} Please try again after the reset time.`
               : 'GitHub API request forbidden (403).'
           )
         );

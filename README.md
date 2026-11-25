@@ -1,6 +1,6 @@
 # ⚡ GitHub Developer Explorer
 
-A **production-quality** developer discovery platform built with React 18, Redux Toolkit, and the GitHub REST API. Search millions of developers, explore their repositories, and bookmark your favorites — all in a stunning dark-mode UI with glassmorphism design.
+A client-side developer discovery platform built with React, Redux Toolkit, and the GitHub REST API. Search millions of developers, explore their repositories, and bookmark your favorites — all in a stunning dark-mode UI with glassmorphism design.
 
 ---
 
@@ -30,12 +30,12 @@ A **production-quality** developer discovery platform built with React 18, Redux
 
 | Technology | Version | Purpose |
 |---|---|---|
-| React | 18 | UI framework — functional components + hooks |
-| React Router | v6 | Client-side routing |
-| Redux Toolkit | latest | Global state management |
-| React Redux | latest | React bindings for Redux |
-| Axios | latest | HTTP client with interceptors |
-| Vite | latest | Dev server & build tool |
+| React | 19 | UI framework — functional components + hooks |
+| React Router | v7 | Client-side routing |
+| Redux Toolkit | 2.x | Global state management |
+| React Redux | 9.x | React bindings for Redux |
+| Axios | 1.x | HTTP client with interceptors |
+| Vite | 8.x | Dev server & build tool |
 | Vanilla CSS | — | Custom design system, no Tailwind |
 
 ---
@@ -60,25 +60,11 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ---
 
-## 🔑 GitHub Token Setup
+## 🌐 GitHub API rate limits
 
-The GitHub API allows **60 requests/hour** for unauthenticated requests. With a personal access token you get **5,000 requests/hour**.
+The application currently calls the public GitHub REST API directly from the browser without authentication. GitHub applies an unauthenticated rate limit (commonly 60 requests per hour per IP). The application reads rate-limit response headers and displays rate-limit information.
 
-1. Go to [github.com/settings/tokens](https://github.com/settings/tokens)
-2. Click **Generate new token (classic)**
-3. Give it a name — no scopes are required (public API access only)
-4. Copy the generated token
-5. Create a `.env` file in the project root:
-
-```env
-VITE_GITHUB_TOKEN=ghp_your_token_here
-```
-
-6. Restart the dev server (`npm run dev`)
-
-> **Never commit your `.env` file.** It is already in `.gitignore`.
-
----
+**Do not put a personal access token in a `VITE_*` variable.** Vite embeds these variables in the client-side bundle, where visitors can inspect them. If authenticated requests are needed in a future version, add a server-side API proxy and keep the token in the server environment.
 
 ## 📁 Project Architecture
 
